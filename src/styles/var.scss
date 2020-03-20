@@ -1,0 +1,50 @@
+/** app color */
+$c-app-theme: #008d8e;
+$c-app-main: #eeeeee;
+$c-bg-app: #efeff4;
+$c-active: #f2f3f5;
+
+/** base color */
+$c-white: #ffffff;
+$c-green: #08c161;
+$c-black: #000000;
+$c-orange: #ef7b40;
+$c-blue: #0e76e1;
+$c-red: #dd524d;
+$c-grey: #808080;
+
+/** font size */
+$fz-sl: 1.2rem !important;
+$fz-l: 1.1rem !important;
+$fz-n: 1rem !important;
+$fz-s: 0.9rem !important;
+$fz-ss: 0.8rem !important;
+$fz-sss: 0.6rem !important;
+
+/** mixin-layout */
+@mixin flex($d) {
+  display: flex;
+  @if $d == "h" {
+    flex-direction: row;
+  }
+  @if $d == "v" {
+    flex-direction: column;
+  }
+}
+
+@mixin flex-c($d) {
+  display: flex;
+  @if $d == "h" {
+    flex-direction: row;
+    align-items: center;
+  }
+  @if $d == "v" {
+    flex-direction: column;
+    justify-content: center;
+  }
+  @if $d == "a" {
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+  }
+}

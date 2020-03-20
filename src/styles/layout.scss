@@ -1,0 +1,29 @@
+html,
+body {
+  padding: 0;
+  margin: 0;
+  height: 100%;
+}
+
+body {
+  font-size: 14px;
+}
+
+.gc-layout-main {
+  height: 100%;
+  margin: 0 auto;
+  width: 100%;
+  @include flex(v);
+  position: absolute;
+}
+
+.gc-layout-scroll {
+  background-color: $c-bg-app;
+  height: 100%;
+  width: 100%;
+  flex: 1;
+  overflow-x: hidden;
+  overflow-y: auto;
+  position: relative;
+  margin-bottom: -1px;
+}

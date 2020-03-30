@@ -30,7 +30,7 @@
 
     <template slot="right">
       <van-button square type="danger" text="删除" @click="del" />
-      <van-button square type="primary" text="修改" />
+      <van-button square type="primary" text="延期" />
     </template>
   </van-swipe-cell>
 </template>
@@ -38,7 +38,7 @@
 <script lang="ts">
 import { Vue, Component, Prop } from "vue-property-decorator";
 import { Checkbox, SwipeCell, Button, Cell, CheckboxGroup } from "vant";
-import { ITask } from "@/services/indexedDB/task";
+import { ITask, TaskStatus } from "@/services/indexedDB/task";
 
 Vue.use(Checkbox)
   .use(CheckboxGroup)
@@ -50,7 +50,7 @@ Vue.use(Checkbox)
 export default class CTask extends Vue {
   @Prop({ required: true }) task!: ITask;
 
-  checked = this.task.state === 1;
+  checked = this.task.status === TaskStatus.已完成;
 
   result = [];
 

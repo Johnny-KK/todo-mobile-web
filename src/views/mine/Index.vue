@@ -38,8 +38,14 @@
 import { Vue, Component } from "vue-property-decorator";
 import { Cell, CellGroup } from "vant";
 import { ITask, TaskService } from "@/services/indexedDB/task";
+import tools from "@/utils/tools.js";
 
 Vue.use(Cell).use(CellGroup);
+
+interface Backup {
+  data: object; // 备份数据
+  time: number; // 备份时间戳
+}
 
 @Component
 export default class Mine extends Vue {
@@ -48,9 +54,13 @@ export default class Mine extends Vue {
   /** 导出数据 */
   async exportData() {
     const arr: ITask[] = await this.taskService.query();
-    console.log(arr);
+
+    tools.writeLocalFile(arr);
     return arr;
   }
+
+  /** 写入download文件夹 */
+  // writeData() {}
 }
 </script>
 

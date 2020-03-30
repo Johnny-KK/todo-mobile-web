@@ -5,16 +5,41 @@ import moment from "moment";
 export interface ITask {
   id?: number; // 主键
   title: string; // 任务标题
-  content?: string; // 任务具体内容
-  date: string; // 任务计划完成日期
-  actTime?: string; // 任务实际完成时间
-  state: number; // 任务状态 0待完成1已完成2已过期
-  tomato?: number; // 任务小番茄数
+  content: string; // 任务具体内容
+  planDate: number | null; // 任务计划完成日期当天开始时间戳
+  actualTime: number | null; // 任务实际完成时间戳
+  status: TaskStatus; // 任务状态
+  tomato: number; // 任务小番茄数
   children?: Array<ITask>; // 子任务
+}
+
+/** 任务状态 */
+export enum TaskStatus {
+  待完成,
+  已完成,
+  已超时,
+  已延期,
+  延期已完成,
+  已取消,
+  未指定
 }
 
 /** 任务服务 */
 export class TaskService {
+  /** 初始化获取新任务 */
+  initTask(): ITask {
+    return {
+      title: "",
+      content: "",
+      planDate: moment()
+        .startOf("date")
+        .valueOf(),
+      actualTime: null,
+      status: TaskStatus.待完成,
+      tomato: 0
+    };
+  }
+
   /** 新增任务 */
   async add(task: ITask): Promise<number> {
     return await db.task.add(task);
@@ -26,24 +51,46 @@ export class TaskService {
   }
 
   /** 根据id修改任务状态 */
-  async changeState(id: number, state: number): Promise<number> {
+  async changeState(id: number, status: TaskStatus): Promise<number> {
     return await db.task.update(id, {
-      state: state,
-      actTime: state === 1 ? moment().format("YYYY-MM-DD HH:mm:ss") : ""
+      status: status,
+      actualTime: status === TaskStatus.已完成 ? new Date() : null
     });
   }
 
   /**
    * 查询任务列表
+   *
+   * @param planDate{number | undefined} 任务计划完成时间当日开始时间戳
    */
-  async query(date?: string): Promise<ITask[]> {
+  async query(planDate?: number): Promise<ITask[]> {
     const arr: ITask[] =
-      date == undefined
+      planDate == undefined
         ? await db.task.toArray()
         : await db.task
-            .where("date")
-            .equals(date)
+            .where("planDate")
+            .equals(planDate)
             .toArray();
-    return arr.sort((a: ITask, b: ITask) => a.state - b.state);
+    return this.sortTaskList(arr);
+  }
+
+  /** 查询最近七天的任务列表 */
+  async queryLast7Days(): Promise<ITask[]> {
+    return await db.task
+      .where("planDate")
+      .between(
+        moment()
+          .subtract(6, "days")
+          .valueOf(),
+        moment()
+          .startOf("date")
+          .valueOf()
+      )
+      .toArray();
+  }
+
+  /** 任务排序 */
+  sortTaskList(taskList: ITask[]): ITask[] {
+    return taskList;
   }
 }

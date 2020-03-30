@@ -11,16 +11,14 @@
         size="mini"
         round
         @click="showCalendar = true"
-        :class="{ 'date-selected': task.date !== `none` }"
-        >{{
-          task.date === "none" || !task.date ? "选择日期" : task.date
-        }}</van-button
+        :class="{ 'date-selected': task.planDate !== null }"
+        >{{ task.planDate | timeFilter }}</van-button
       >
       <van-button
         type="default"
         size="mini"
         round
-        :class="{ 'date-selected': task.date === `none` }"
+        :class="{ 'date-selected': task.planDate === null }"
         @click="setDate('none')"
         >暂无日期</van-button
       >
@@ -59,7 +57,7 @@ import { Vue, Component } from "vue-property-decorator";
 import { ActionSheet, Field, Cell, Button, Calendar } from "vant";
 import moment from "moment";
 
-import { ITask } from "@/services/indexedDB/task";
+import { ITask, TaskService } from "@/services/indexedDB/task";
 
 Vue.use(ActionSheet)
   .use(Field)
@@ -67,41 +65,39 @@ Vue.use(ActionSheet)
   .use(Button)
   .use(Calendar);
 
-@Component
+@Component({
+  filters: {
+    timeFilter(time: number | null): string {
+      return time === null ? "选择日期" : moment(time).format("YYYY-MM-DD");
+    }
+  }
+})
 export default class CreateTask extends Vue {
+  /** 任务服务 */
+  taskService = new TaskService();
   /** 是否显示新增面板 */
   show = false;
   /** 是否显示日历 */
   showCalendar = false;
 
   /** 任务实体 */
-  task: ITask = {
-    title: "",
-    content: "",
-    date: moment().format("YYYY-MM-DD"),
-    state: 0,
-    tomato: 0
-  };
+  task: ITask = this.taskService.initTask();
 
   /** 重置 */
   reset() {
     this.show = false;
-    this.task = {
-      title: "",
-      content: "",
-      date: moment().format("YYYY-MM-DD"),
-      state: 0,
-      tomato: 0
-    };
+    this.task = this.taskService.initTask();
   }
 
   /** 设置日期 */
   setDate(date: string | Date) {
-    if (date === "actual") {
-      this.showCalendar = true;
+    if (date === "none") {
+      this.task.planDate = null;
       return;
     }
-    this.task.date = this.transDate(date);
+    if (date instanceof Date) {
+      this.task.planDate = moment(date).valueOf();
+    }
     this.showCalendar = false;
   }
 

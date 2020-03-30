@@ -34,10 +34,12 @@
 
 import { VueConstructor } from "vue";
 import GcIcon from "./icon/Index.vue";
+import GCCard from "./card/Index.vue";
 
 const ComponentPlugin = {
   install: (Vue: VueConstructor) => {
     Vue.component("gc-icon", GcIcon);
+    Vue.component("gc-card", GCCard);
   }
 };
 

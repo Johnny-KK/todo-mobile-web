@@ -1,7 +1,7 @@
 <template>
   <div>
     <keep-alive>
-      <router-view />
+      <router-view class="main-tab" />
     </keep-alive>
 
     <van-tabbar v-model="activeTab" route>
@@ -32,6 +32,12 @@ export default class Main extends Vue {
 </script>
 
 <style lang="scss" scoped>
+.main-tab {
+  height: auto;
+  top: 0;
+  bottom: 50px;
+}
+
 .gc-icon {
   font-size: $fz-sl;
 }

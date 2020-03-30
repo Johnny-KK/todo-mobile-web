@@ -1,11 +1,13 @@
 <template>
-  <div>
-    <div>
+  <div class="gc-layout-main">
+    <div class="header">
       <gc-icon name="chart"></gc-icon>
       <span>数据报表</span>
     </div>
 
-    <div class="chat-contain"></div>
+    <div class="gc-layout-scroll">
+      <div class="chat-contain"></div>
+    </div>
   </div>
 </template>
 
@@ -16,7 +18,7 @@ import echarts from "echarts";
 @Component
 export default class Report extends Vue {
   mounted() {
-    this.initChat();
+    // this.initChat();
   }
 
   initChat() {
@@ -44,6 +46,14 @@ export default class Report extends Vue {
 </script>
 
 <style lang="scss" scoped>
+.header {
+  @include flex-c(h);
+  background-color: $c-app-theme;
+  color: $c-white;
+  height: 44px;
+  padding: 0 15px;
+}
+
 .chat-contain {
   height: 150px;
   width: 100%;

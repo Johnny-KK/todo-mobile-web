@@ -1,5 +1,5 @@
 <template>
-  <div class="p-home gc-layout-main">
+  <div class="gc-layout-main">
     <div class="header">
       <gc-icon name="menu"></gc-icon>
       <span>Todo清单</span>
@@ -13,10 +13,10 @@
       <div
         v-for="date in dateList"
         :key="date"
-        :class="{ 'date-bar--selected': date === taskListParams.date }"
-        @click="taskListParams.date = date"
+        :class="{ 'date-bar--selected': date === taskListParams.planDate }"
+        @click="taskListParams.planDate = date"
       >
-        {{ date.substring(8, 10) }}
+        {{ date | timeFilter }}
       </div>
     </div>
 
@@ -40,34 +40,41 @@
 
 <script lang="ts">
 import { Vue, Component, Watch } from "vue-property-decorator";
-import { ITask, TaskService } from "@/services/indexedDB/task";
+import { ITask, TaskService, TaskStatus } from "@/services/indexedDB/task";
 import moment from "moment";
 import CTask from "./widget/task.vue";
 import CreateTask from "./widget/createTask.vue";
 
 @Component({
-  components: { "create-task": CreateTask, "p-task": CTask }
+  components: { "create-task": CreateTask, "p-task": CTask },
+  filters: {
+    timeFilter(time: number): string {
+      return moment(time).format("DD");
+    }
+  }
 })
 export default class CHome extends Vue {
   taskService = new TaskService(); //
-  taskList: Array<ITask> = []; // 任务列表
-  taskListParams = { date: moment().format("YYYY-MM-DD") };
-  dateList: Array<string> = [...new Array(moment().daysInMonth())].map((x, i) =>
+  taskList: ITask[] = []; // 任务列表
+  taskListParams = {
+    planDate: moment()
+      .startOf("date")
+      .valueOf()
+  };
+  dateList: number[] = [...new Array(moment().daysInMonth())].map((x, i) =>
     moment(
       moment()
         .startOf("month")
         .add(i, "day")
-    ).format("YYYY-MM-DD")
+    ).valueOf()
   ); // 当月日期列表
-
-  // mounted() {}
 
   /** 获取任务列表 */
   @Watch("taskListParams", { deep: true, immediate: true })
   private queryTaskList(): void {
-    this.taskService
-      .query(this.taskListParams.date)
-      .then(data => (this.taskList = data));
+    this.taskService.query(this.taskListParams.planDate).then(data => {
+      this.taskList = data;
+    });
   }
 
   /** 新增任务 */
@@ -80,9 +87,14 @@ export default class CHome extends Vue {
 
   /** 改变任务完成状态 */
   changeState(param: { checked: boolean; id: number }) {
-    this.taskService.changeState(param.id, param.checked ? 1 : 0).then(() => {
-      this.queryTaskList();
-    });
+    this.taskService
+      .changeState(
+        param.id,
+        param.checked ? TaskStatus.已完成 : TaskStatus.待完成
+      )
+      .then(() => {
+        this.queryTaskList();
+      });
   }
 
   /** 删除任务 */
@@ -93,12 +105,6 @@ export default class CHome extends Vue {
 </script>
 
 <style lang="scss" scoped>
-.p-home {
-  height: auto;
-  top: 0;
-  bottom: 50px;
-}
-
 .header {
   @include flex-c(h);
   background-color: $c-app-theme;

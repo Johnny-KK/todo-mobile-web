@@ -1,5 +1,5 @@
-import { db } from "./index";
-import moment from "moment";
+import { db } from './index';
+import moment from 'moment';
 
 /** 任务 */
 export interface ITask {
@@ -29,10 +29,10 @@ export class TaskService {
   /** 初始化获取新任务 */
   initTask(): ITask {
     return {
-      title: "",
-      content: "",
+      title: '',
+      content: '',
       planDate: moment()
-        .startOf("date")
+        .startOf('date')
         .valueOf(),
       actualTime: null,
       status: TaskStatus.待完成,
@@ -68,7 +68,7 @@ export class TaskService {
       planDate == undefined
         ? await db.task.toArray()
         : await db.task
-            .where("planDate")
+            .where('planDate')
             .equals(planDate)
             .toArray();
     return this.sortTaskList(arr);
@@ -77,13 +77,13 @@ export class TaskService {
   /** 查询最近七天的任务列表 */
   async queryLast7Days(): Promise<ITask[]> {
     return await db.task
-      .where("planDate")
+      .where('planDate')
       .between(
         moment()
-          .subtract(6, "days")
+          .subtract(6, 'days')
           .valueOf(),
         moment()
-          .startOf("date")
+          .startOf('date')
           .valueOf()
       )
       .toArray();
@@ -92,7 +92,7 @@ export class TaskService {
   /** 处理任务 */
   async handleTask(startDate: number, endDate: number) {
     db.task
-      .where("planTime")
+      .where('planTime')
       .between(startDate, endDate)
       .modify((task: ITask) => (task.status = TaskStatus.已超时));
   }

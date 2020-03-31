@@ -9,13 +9,13 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component, Prop } from "vue-property-decorator";
-import moment from "moment";
+import { Vue, Component, Prop } from 'vue-property-decorator';
+import moment from 'moment';
 
 @Component({
   filters: {
     timeFilter(time: number): string {
-      return moment(time).format("DD");
+      return moment(time).format('DD');
     }
   }
 })
@@ -27,8 +27,8 @@ export default class CDateBar extends Vue {
   dateList: number[] = [...new Array(moment().daysInMonth())].map((x, i) =>
     moment(
       moment()
-        .startOf("month")
-        .add(i, "day")
+        .startOf('month')
+        .add(i, 'day')
     ).valueOf()
   );
 
@@ -39,15 +39,15 @@ export default class CDateBar extends Vue {
   /** 日期样式 */
   dateItemClass(date: number) {
     if (this.value === date) {
-      return { "date-bar__item--selected": true };
+      return { 'date-bar__item--selected': true };
     }
     if (
       date ===
       moment()
-        .startOf("date")
+        .startOf('date')
         .valueOf()
     ) {
-      return { "date-bar__item--today": true };
+      return { 'date-bar__item--today': true };
     }
   }
 
@@ -57,7 +57,7 @@ export default class CDateBar extends Vue {
       x =>
         x ===
         moment()
-          .startOf("date")
+          .startOf('date')
           .valueOf()
     );
     this.$el.scrollLeft =

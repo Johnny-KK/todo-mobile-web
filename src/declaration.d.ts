@@ -1,2 +1,2 @@
-declare module "vue-page-stack";
-declare module "echarts";
+declare module 'vue-page-stack';
+declare module 'echarts';

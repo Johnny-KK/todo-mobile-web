@@ -3,6 +3,7 @@
     "source.fixAll.eslint": false
   },
   "editor.formatOnSave": true,
+  "prettier.singleQuote": true,
   "[vue]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   }

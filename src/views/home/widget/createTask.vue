@@ -53,11 +53,11 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component } from "vue-property-decorator";
-import { ActionSheet, Field, Cell, Button, Calendar } from "vant";
-import moment from "moment";
+import { Vue, Component } from 'vue-property-decorator';
+import { ActionSheet, Field, Cell, Button, Calendar } from 'vant';
+import moment from 'moment';
 
-import { ITask, TaskService } from "@/services/indexedDB/task";
+import { ITask, TaskService } from '@/services/indexedDB/task';
 
 Vue.use(ActionSheet)
   .use(Field)
@@ -68,7 +68,7 @@ Vue.use(ActionSheet)
 @Component({
   filters: {
     timeFilter(time: number | null): string {
-      return time === null ? "选择日期" : moment(time).format("YYYY-MM-DD");
+      return time === null ? '选择日期' : moment(time).format('YYYY-MM-DD');
     }
   }
 })
@@ -90,7 +90,7 @@ export default class CreateTask extends Vue {
 
   /** 设置日期 */
   setDate(date: string | Date) {
-    if (date === "none") {
+    if (date === 'none') {
       this.task.planDate = null;
       return;
     }
@@ -103,15 +103,15 @@ export default class CreateTask extends Vue {
   /** 日期格式化 */
   transDate(date: string | Date): string {
     if (date instanceof Date) {
-      return moment(date).format("YYYY-MM-DD");
+      return moment(date).format('YYYY-MM-DD');
     }
-    return date === "today"
-      ? moment().format("YYYY-MM-DD")
-      : date === "tomorrow"
+    return date === 'today'
+      ? moment().format('YYYY-MM-DD')
+      : date === 'tomorrow'
       ? moment()
-          .add(1, "day")
-          .format("YYYY-MM-DD")
-      : "none";
+          .add(1, 'day')
+          .format('YYYY-MM-DD')
+      : 'none';
   }
 
   /** 设置任务小番茄数 */
@@ -127,7 +127,7 @@ export default class CreateTask extends Vue {
       // FIXME 修改为校验接口
       return false;
     }
-    this.$emit("add", this.task);
+    this.$emit('add', this.task);
   }
 }
 </script>

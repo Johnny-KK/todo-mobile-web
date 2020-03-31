@@ -36,10 +36,10 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component } from "vue-property-decorator";
-import { Cell, CellGroup } from "vant";
-import { ITask, TaskService } from "@/services/indexedDB/task";
-import tools from "@/utils/tools.js";
+import { Vue, Component } from 'vue-property-decorator';
+import { Cell, CellGroup } from 'vant';
+import { ITask, TaskService } from '@/services/indexedDB/task';
+import tools from '@/utils/tools.js';
 
 Vue.use(Cell).use(CellGroup);
 

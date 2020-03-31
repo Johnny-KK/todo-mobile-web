@@ -36,9 +36,9 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component, Prop } from "vue-property-decorator";
-import { Checkbox, SwipeCell, Button, Cell, CheckboxGroup } from "vant";
-import { ITask, TaskStatus } from "@/services/indexedDB/task";
+import { Vue, Component, Prop } from 'vue-property-decorator';
+import { Checkbox, SwipeCell, Button, Cell, CheckboxGroup } from 'vant';
+import { ITask, TaskStatus } from '@/services/indexedDB/task';
 
 Vue.use(Checkbox)
   .use(CheckboxGroup)
@@ -57,12 +57,12 @@ export default class CTask extends Vue {
 
   /** */
   change(checked: boolean) {
-    this.$emit("changeState", { checked: checked, id: this.task.id });
+    this.$emit('changeState', { checked: checked, id: this.task.id });
   }
 
   /** */
   del() {
-    this.$emit("del", this.task.id);
+    this.$emit('del', this.task.id);
   }
 }
 </script>

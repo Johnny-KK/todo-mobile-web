@@ -1,4 +1,4 @@
-import { db } from "./index";
+import { db } from './index';
 
 export interface ICommon {
   key: string; // 固定值common，方便查询
@@ -12,7 +12,7 @@ export class CommonService {
   /** 新增数据 */
   async add(): Promise<string> {
     const common: ICommon = {
-      key: "common",
+      key: 'common',
       lastHandle: null
     };
     return await db.common.add(common);
@@ -20,17 +20,17 @@ export class CommonService {
 
   /** 获取数据 如没有数据则新增并返回数据 */
   async get(): Promise<ICommon> {
-    let common = await db.common.get("common");
+    let common = await db.common.get('common');
     if (common === undefined) {
       await this.add();
-      common = await db.common.get("common");
+      common = await db.common.get('common');
     }
     return common as ICommon;
   }
 
   /** 更新上次处理时间 */
   async updateLastHandle(): Promise<ICommon> {
-    await db.common.update("common", {
+    await db.common.update('common', {
       lastHandle: new Date().valueOf()
     });
     return this.get();

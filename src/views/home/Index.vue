@@ -32,18 +32,18 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component, Watch } from "vue-property-decorator";
-import { ITask, TaskService, TaskStatus } from "@/services/indexedDB/task";
-import moment from "moment";
-import CDateBar from "./widget/dateBar.vue";
-import CTask from "./widget/task.vue";
-import CreateTask from "./widget/createTask.vue";
+import { Vue, Component, Watch } from 'vue-property-decorator';
+import { ITask, TaskService, TaskStatus } from '@/services/indexedDB/task';
+import moment from 'moment';
+import CDateBar from './widget/dateBar.vue';
+import CTask from './widget/task.vue';
+import CreateTask from './widget/createTask.vue';
 
 @Component({
   components: {
-    "create-task": CreateTask,
-    "p-task": CTask,
-    "date-bar": CDateBar
+    'create-task': CreateTask,
+    'p-task': CTask,
+    'date-bar': CDateBar
   }
 })
 export default class CHome extends Vue {
@@ -51,12 +51,12 @@ export default class CHome extends Vue {
   taskList: ITask[] = []; // 任务列表
   taskListParams = {
     planDate: moment()
-      .startOf("date")
+      .startOf('date')
       .valueOf()
   };
 
   /** 获取任务列表 */
-  @Watch("taskListParams", { deep: true, immediate: true })
+  @Watch('taskListParams', { deep: true, immediate: true })
   private queryTaskList(): void {
     this.taskService.query(this.taskListParams.planDate).then(data => {
       this.taskList = data;

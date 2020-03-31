@@ -1,20 +1,20 @@
-import Vue from "vue";
-import App from "./App.vue";
-import store from "./store";
+import Vue from 'vue';
+import App from './App.vue';
+import store from './store';
 
 /** router */
-import router from "./router";
-import VuePageStack from "vue-page-stack";
+import router from './router';
+import VuePageStack from 'vue-page-stack';
 Vue.use(VuePageStack, { router });
 
 /** css */
-import "./styles/index.scss";
+import './styles/index.scss';
 
 /** icon */
-import "./icons/index";
+import './icons/index';
 
 /** component */
-import Components from "./components/index";
+import Components from './components/index';
 Vue.use(Components);
 
 /** 启动时生产提示 */
@@ -24,4 +24,4 @@ new Vue({
   router,
   store,
   render: h => h(App)
-}).$mount("#app");
+}).$mount('#app');

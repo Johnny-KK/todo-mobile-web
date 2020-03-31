@@ -32,14 +32,14 @@
 
 // FIXME 找到组件自动化引入BUG
 
-import { VueConstructor } from "vue";
-import GcIcon from "./icon/Index.vue";
-import GCCard from "./card/Index.vue";
+import { VueConstructor } from 'vue';
+import GcIcon from './icon/Index.vue';
+import GCCard from './card/Index.vue';
 
 const ComponentPlugin = {
   install: (Vue: VueConstructor) => {
-    Vue.component("gc-icon", GcIcon);
-    Vue.component("gc-card", GCCard);
+    Vue.component('gc-icon', GcIcon);
+    Vue.component('gc-card', GCCard);
   }
 };
 

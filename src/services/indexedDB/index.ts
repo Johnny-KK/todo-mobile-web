@@ -1,8 +1,8 @@
-import Dexie from "dexie";
-import { ITask } from "./task";
-import { ICommon } from "./common";
+import Dexie from 'dexie';
+import { ITask } from './task';
+import { ICommon } from './common';
 
-const DBName = "TodoDB";
+const DBName = 'TodoDB';
 
 class DataBase extends Dexie {
   public task: Dexie.Table<ITask, number>;
@@ -12,12 +12,12 @@ class DataBase extends Dexie {
     super(DBName);
 
     this.version(1).stores({
-      task: "++id, title, planDate",
-      common: "key"
+      task: '++id, title, planDate',
+      common: 'key'
     });
 
-    this.task = this.table("task");
-    this.common = this.table("common");
+    this.task = this.table('task');
+    this.common = this.table('common');
   }
 }
 

@@ -10,14 +10,14 @@
  *
  * 新增加载网络图片地址
  */
-import { Vue, Component, Prop } from "vue-property-decorator";
+import { Vue, Component, Prop } from 'vue-property-decorator';
 
-@Component({ name: "gc-icon" })
+@Component({ name: 'gc-icon' })
 export default class GcIcon extends Vue {
   /** SVG图标名称 */
-  @Prop({ type: String, default: "emoji" }) name?: string;
+  @Prop({ type: String, default: 'emoji' }) name?: string;
   /** URL图标地址 在name存在时忽略 */
-  @Prop({ type: String, validator: value => value.endsWith("jpg") })
+  @Prop({ type: String, validator: value => value.endsWith('jpg') })
   url?: string;
 }
 </script>

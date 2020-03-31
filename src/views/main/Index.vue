@@ -13,9 +13,9 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component } from "vue-property-decorator";
-import { Tabbar, TabbarItem } from "vant";
-import { CommonService } from "@/services/indexedDB/common";
+import { Vue, Component } from 'vue-property-decorator';
+import { Tabbar, TabbarItem } from 'vant';
+import { CommonService } from '@/services/indexedDB/common';
 
 Vue.use(Tabbar).use(TabbarItem);
 
@@ -26,10 +26,10 @@ export default class Main extends Vue {
   // 选项卡
   activeTab = 0;
   tabList = [
-    { icon: "home", route: "/main/home" },
-    { icon: "time", route: "/main/tomato" },
-    { icon: "report", route: "/main/report" },
-    { icon: "user", route: "/main/mine" }
+    { icon: 'home', route: '/main/home' },
+    { icon: 'time', route: '/main/tomato' },
+    { icon: 'report', route: '/main/report' },
+    { icon: 'user', route: '/main/mine' }
   ];
 
   async mounted() {

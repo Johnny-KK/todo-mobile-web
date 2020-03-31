@@ -13,13 +13,13 @@ export interface ITask {
   children?: Array<ITask>; // 子任务
 }
 
-/** 任务状态 */
+/** 任务状态 同时用作排序依据 */
 export enum TaskStatus {
   待完成,
-  已完成,
-  已超时,
   已延期,
+  已完成,
   延期已完成,
+  已超时,
   已取消,
   未指定
 }
@@ -97,8 +97,13 @@ export class TaskService {
       .modify((task: ITask) => (task.status = TaskStatus.已超时));
   }
 
+  /** 通用的任务查询 */
+  async queryList() {
+    // 考虑时间
+  }
+
   /** 任务排序 */
   sortTaskList(taskList: ITask[]): ITask[] {
-    return taskList;
+    return taskList.sort((a: ITask, b: ITask) => a.status - b.status);
   }
 }

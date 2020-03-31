@@ -1,6 +1,7 @@
 const resolve = dir => require("path").join(__dirname, dir);
 
 module.exports = {
+  productionSourceMap: false,
   publicPath: process.env.NODE_ENV === "production" ? "./" : "/",
   css: {
     /** 在旧版本的sass-loader中 使用data替换prependData */

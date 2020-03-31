@@ -79,7 +79,6 @@ export default class CreateTask extends Vue {
   show = false;
   /** 是否显示日历 */
   showCalendar = false;
-
   /** 任务实体 */
   task: ITask = this.taskService.initTask();
 

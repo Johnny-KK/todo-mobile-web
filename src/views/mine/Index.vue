@@ -8,33 +8,27 @@
 
       <van-cell-group>
         <van-cell title="账户与安全" is-link>
-          <span slot="icon">
-            <gc-icon name="safe"></gc-icon>
-          </span>
+          <span slot="icon"><gc-icon name="safe"></gc-icon></span>
         </van-cell>
 
         <van-cell title="数据与同步" is-link>
-          <span slot="icon">
-            <gc-icon name="cloud-sync"></gc-icon>
-          </span>
+          <span slot="icon"><gc-icon name="cloud-sync"></gc-icon></span>
         </van-cell>
 
         <van-cell title="数据导出" is-link @click="exportData">
-          <span slot="icon">
-            <gc-icon name="export"></gc-icon>
-          </span>
+          <span slot="icon"><gc-icon name="export"></gc-icon></span>
+        </van-cell>
+
+        <van-cell title="数据导入" is-link>
+          <span slot="icon"><gc-icon name="import"></gc-icon></span>
         </van-cell>
 
         <van-cell title="主题皮肤" is-link>
-          <span slot="icon">
-            <gc-icon name="paint-bucket"></gc-icon>
-          </span>
+          <span slot="icon"><gc-icon name="paint-bucket"></gc-icon></span>
         </van-cell>
 
         <van-cell title="隐私密码锁" is-link>
-          <span slot="icon">
-            <gc-icon name="lock"></gc-icon>
-          </span>
+          <span slot="icon"><gc-icon name="lock"></gc-icon></span>
         </van-cell>
       </van-cell-group>
     </div>

@@ -9,25 +9,18 @@
       <gc-icon name="more"></gc-icon>
     </div>
 
-    <div class="date-bar">
-      <div
-        v-for="date in dateList"
-        :key="date"
-        :class="{ 'date-bar--selected': date === taskListParams.planDate }"
-        @click="taskListParams.planDate = date"
-      >
-        {{ date | timeFilter }}
-      </div>
-    </div>
+    <date-bar v-model="taskListParams.planDate"></date-bar>
 
     <div class="gc-layout-scroll">
-      <p-task
-        v-for="task in taskList"
-        :key="task.id"
-        :task="task"
-        @changeState="changeState"
-        @del="del"
-      ></p-task>
+      <transition-group name="flip-list" tag="p">
+        <p-task
+          v-for="task in taskList"
+          :key="task.id"
+          :task="task"
+          @changeState="changeState"
+          @del="del"
+        ></p-task>
+      </transition-group>
     </div>
 
     <div class="add-btn" @click="$refs.createForm.show = true">
@@ -42,15 +35,15 @@
 import { Vue, Component, Watch } from "vue-property-decorator";
 import { ITask, TaskService, TaskStatus } from "@/services/indexedDB/task";
 import moment from "moment";
+import CDateBar from "./widget/dateBar.vue";
 import CTask from "./widget/task.vue";
 import CreateTask from "./widget/createTask.vue";
 
 @Component({
-  components: { "create-task": CreateTask, "p-task": CTask },
-  filters: {
-    timeFilter(time: number): string {
-      return moment(time).format("DD");
-    }
+  components: {
+    "create-task": CreateTask,
+    "p-task": CTask,
+    "date-bar": CDateBar
   }
 })
 export default class CHome extends Vue {
@@ -61,13 +54,6 @@ export default class CHome extends Vue {
       .startOf("date")
       .valueOf()
   };
-  dateList: number[] = [...new Array(moment().daysInMonth())].map((x, i) =>
-    moment(
-      moment()
-        .startOf("month")
-        .add(i, "day")
-    ).valueOf()
-  ); // 当月日期列表
 
   /** 获取任务列表 */
   @Watch("taskListParams", { deep: true, immediate: true })
@@ -121,26 +107,8 @@ export default class CHome extends Vue {
   }
 }
 
-.date-bar {
-  @include flex(h);
-  overflow-x: scroll;
-  padding: 10px 0;
-  background-color: $c-app-theme;
-
-  & > div {
-    color: $c-white;
-    margin: 0 5px;
-    text-align: center;
-    line-height: 40px;
-    flex: 0 0 40px;
-    border-radius: 20px;
-  }
-
-  & > .date-bar--selected {
-    color: $c-app-theme;
-    background-color: $c-white;
-    opacity: 0.8;
-  }
+.flip-list-move {
+  transition: transform 0.5s;
 }
 
 .add-btn {

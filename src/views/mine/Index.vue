@@ -1,36 +1,43 @@
 <template>
   <div class="gc-layout-main">
-    <van-cell-group>
-      <van-cell title="账户与安全" is-link>
-        <span slot="icon">
-          <gc-icon name="safe"></gc-icon>
-        </span>
-      </van-cell>
+    <div class="gc-layout-scroll">
+      <!-- <div class="user-info">
+        <span>avatar</span>
+        <span>username</span>
+      </div> -->
 
-      <van-cell title="数据与同步" is-link>
-        <span slot="icon">
-          <gc-icon name="cloud-sync"></gc-icon>
-        </span>
-      </van-cell>
+      <van-cell-group>
+        <van-cell title="账户与安全" is-link>
+          <span slot="icon">
+            <gc-icon name="safe"></gc-icon>
+          </span>
+        </van-cell>
 
-      <van-cell title="数据导出" is-link @click="exportData">
-        <span slot="icon">
-          <gc-icon name="export"></gc-icon>
-        </span>
-      </van-cell>
+        <van-cell title="数据与同步" is-link>
+          <span slot="icon">
+            <gc-icon name="cloud-sync"></gc-icon>
+          </span>
+        </van-cell>
 
-      <van-cell title="主题皮肤" is-link>
-        <span slot="icon">
-          <gc-icon name="paint-bucket"></gc-icon>
-        </span>
-      </van-cell>
+        <van-cell title="数据导出" is-link @click="exportData">
+          <span slot="icon">
+            <gc-icon name="export"></gc-icon>
+          </span>
+        </van-cell>
 
-      <van-cell title="隐私密码锁" is-link>
-        <span slot="icon">
-          <gc-icon name="lock"></gc-icon>
-        </span>
-      </van-cell>
-    </van-cell-group>
+        <van-cell title="主题皮肤" is-link>
+          <span slot="icon">
+            <gc-icon name="paint-bucket"></gc-icon>
+          </span>
+        </van-cell>
+
+        <van-cell title="隐私密码锁" is-link>
+          <span slot="icon">
+            <gc-icon name="lock"></gc-icon>
+          </span>
+        </van-cell>
+      </van-cell-group>
+    </div>
   </div>
 </template>
 
@@ -43,7 +50,7 @@ import tools from "@/utils/tools.js";
 Vue.use(Cell).use(CellGroup);
 
 interface Backup {
-  data: object; // 备份数据
+  data: { taskList: ITask[] }; // 备份数据
   time: number; // 备份时间戳
 }
 
@@ -54,13 +61,12 @@ export default class Mine extends Vue {
   /** 导出数据 */
   async exportData() {
     const arr: ITask[] = await this.taskService.query();
-
-    tools.writeLocalFile(arr);
-    return arr;
+    const result: Backup = {
+      data: { taskList: arr },
+      time: new Date().valueOf()
+    };
+    tools.writeLocalFile(result);
   }
-
-  /** 写入download文件夹 */
-  // writeData() {}
 }
 </script>
 

@@ -1,23 +1,23 @@
 import Dexie from "dexie";
 import { ITask } from "./task";
-import { IUser } from "./user";
+import { ICommon } from "./common";
 
 const DBName = "TodoDB";
 
 class DataBase extends Dexie {
   public task: Dexie.Table<ITask, number>;
-  public user: Dexie.Table<IUser, string>;
+  public common: Dexie.Table<ICommon, string>;
 
   constructor() {
     super(DBName);
 
     this.version(1).stores({
       task: "++id, title, planDate",
-      user: "userName"
+      common: "key"
     });
 
     this.task = this.table("task");
-    this.user = this.table("user");
+    this.common = this.table("common");
   }
 }
 

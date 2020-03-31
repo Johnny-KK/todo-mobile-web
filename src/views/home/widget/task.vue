@@ -50,7 +50,8 @@ Vue.use(Checkbox)
 export default class CTask extends Vue {
   @Prop({ required: true }) task!: ITask;
 
-  checked = this.task.status === TaskStatus.已完成;
+  checked: boolean = this.task.status === TaskStatus.已完成;
+  // disabled: boolean = this.task.status === TaskStatus.已超时 || true;
 
   result = [];
 

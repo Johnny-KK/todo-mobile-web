@@ -54,7 +54,7 @@ export class TaskService {
   async changeState(id: number, status: TaskStatus): Promise<number> {
     return await db.task.update(id, {
       status: status,
-      actualTime: status === TaskStatus.已完成 ? new Date() : null
+      actualTime: status === TaskStatus.已完成 ? new Date().valueOf() : null
     });
   }
 
@@ -87,6 +87,14 @@ export class TaskService {
           .valueOf()
       )
       .toArray();
+  }
+
+  /** 处理任务 */
+  async handleTask(startDate: number, endDate: number) {
+    db.task
+      .where("planTime")
+      .between(startDate, endDate)
+      .modify((task: ITask) => (task.status = TaskStatus.已超时));
   }
 
   /** 任务排序 */

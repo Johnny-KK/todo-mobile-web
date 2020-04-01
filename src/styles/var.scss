@@ -12,6 +12,7 @@ $c-orange: #ef7b40;
 $c-blue: #0e76e1;
 $c-red: #dd524d;
 $c-grey: #808080;
+$c-light-grey: #b4b4b4;
 
 /** font size */
 $fz-sl: 1.2rem !important;
@@ -24,25 +25,25 @@ $fz-sss: 0.6rem !important;
 /** mixin-layout */
 @mixin flex($d) {
   display: flex;
-  @if $d == "h" {
+  @if $d == 'h' {
     flex-direction: row;
   }
-  @if $d == "v" {
+  @if $d == 'v' {
     flex-direction: column;
   }
 }
 
 @mixin flex-c($d) {
   display: flex;
-  @if $d == "h" {
+  @if $d == 'h' {
     flex-direction: row;
     align-items: center;
   }
-  @if $d == "v" {
+  @if $d == 'v' {
     flex-direction: column;
     justify-content: center;
   }
-  @if $d == "a" {
+  @if $d == 'a' {
     flex-direction: row;
     align-items: center;
     justify-content: center;

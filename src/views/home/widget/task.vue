@@ -7,6 +7,7 @@
         v-model="checked"
         shape="square"
         @change="change"
+        :class="{ 'task-checked': checked }"
         >{{ task.title }}</van-checkbox
       >
 
@@ -51,7 +52,6 @@ export default class CTask extends Vue {
   @Prop({ required: true }) task!: ITask;
 
   checked: boolean = this.task.status === TaskStatus.已完成;
-  // disabled: boolean = this.task.status === TaskStatus.已超时 || true;
 
   result = [];
 
@@ -90,6 +90,10 @@ export default class CTask extends Vue {
       margin: 5px 0;
     }
   }
+
+  /deep/.van-checkbox__label {
+    color: inherit;
+  }
 }
 
 /deep/.van-checkbox__icon--checked .van-icon {
@@ -104,7 +108,7 @@ export default class CTask extends Vue {
 }
 
 .task-checked {
-  color: $c-grey;
+  color: $c-light-grey;
   text-decoration: line-through;
 }
 </style>

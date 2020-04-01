@@ -1,2 +1,12 @@
-declare module 'vue-page-stack';
 declare module 'echarts';
+
+// 绑定plus
+declare global {
+  interface Window {
+    plus: {
+      io: { resolveLocalFileSystemURL: Function };
+    };
+  }
+}
+
+export {};

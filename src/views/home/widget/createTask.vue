@@ -168,6 +168,7 @@ export default class CreateTask extends Vue {
     width: 80%;
     margin: 10px 0;
     background-color: $c-app-theme;
+    border-color: $c-app-theme;
   }
 }
 </style>

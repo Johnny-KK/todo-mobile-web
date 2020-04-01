@@ -102,6 +102,14 @@ export class TaskService {
     // 考虑时间
   }
 
+  /** 更新数据库任务数据 -- 原数据全部删除 */
+  async updateAllDate(tasks: ITask[]) {
+    return db.transaction('rw', db.task, () => {
+      db.task.clear();
+      db.task.bulkAdd(tasks);
+    });
+  }
+
   /** 任务排序 */
   sortTaskList(taskList: ITask[]): ITask[] {
     return taskList.sort((a: ITask, b: ITask) => a.status - b.status);

@@ -32,7 +32,7 @@ export default class CDateBar extends Vue {
     ).valueOf()
   );
 
-  mounted() {
+  activated() {
     this.scrollToCenter();
   }
 

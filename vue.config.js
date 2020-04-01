@@ -2,6 +2,7 @@ const resolve = dir => require('path').join(__dirname, dir);
 
 module.exports = {
   productionSourceMap: false,
+  outputDir: 'C:/Users/kk/Documents/dev/H5App/todo-mobile-container/dist',
   publicPath: process.env.NODE_ENV === 'production' ? './' : '/',
   css: {
     /** 在旧版本的sass-loader中 使用data替换prependData */

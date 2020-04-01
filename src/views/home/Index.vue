@@ -12,7 +12,7 @@
     <date-bar v-model="taskListParams.planDate"></date-bar>
 
     <div class="gc-layout-scroll">
-      <transition-group name="flip-list" tag="p">
+      <transition-group name="flip-list">
         <p-task
           v-for="task in taskList"
           :key="task.id"

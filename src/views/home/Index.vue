@@ -9,7 +9,7 @@
       <gc-icon name="more"></gc-icon>
     </div>
 
-    <date-bar v-model="taskListParams.planDate"></date-bar>
+    <date-bar v-model="taskListParams.planDate" ref="dateBar"></date-bar>
 
     <div class="gc-layout-scroll">
       <transition-group name="flip-list">
@@ -25,6 +25,10 @@
 
     <div class="add-btn" @click="$refs.createForm.show = true">
       <gc-icon name="add"></gc-icon>
+    </div>
+
+    <div class="today-btn" @click="$refs.dateBar.fixToday()">
+      <gc-icon name="aim"></gc-icon>
     </div>
 
     <create-task ref="createForm" @add="addTask"></create-task>
@@ -117,6 +121,23 @@ export default class CHome extends Vue {
   position: absolute;
   bottom: 15px;
   right: 15px;
+  height: 40px;
+  width: 40px;
+  border-radius: 20px;
+  line-height: 40px;
+  text-align: center;
+
+  &:active {
+    background-color: #006f6b;
+  }
+}
+
+.today-btn {
+  background-color: $c-app-theme;
+  color: $c-white;
+  position: absolute;
+  bottom: 15px;
+  right: calc(15px + 40px + 15px);
   height: 40px;
   width: 40px;
   border-radius: 20px;

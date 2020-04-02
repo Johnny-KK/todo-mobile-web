@@ -60,8 +60,22 @@ export default class CDateBar extends Vue {
           .startOf('date')
           .valueOf()
     );
+    const barItemWidth = 50;
     this.$el.scrollLeft =
-      index * 50 - (this.$el as HTMLElement).offsetWidth / 2 + 50 / 2;
+      index * barItemWidth -
+      (this.$el as HTMLElement).offsetWidth / 2 +
+      barItemWidth / 2;
+  }
+
+  /** 定位到今天 */
+  fixToday() {
+    this.$emit(
+      'input',
+      moment()
+        .startOf('date')
+        .valueOf()
+    );
+    this.scrollToCenter();
   }
 }
 </script>
@@ -70,6 +84,7 @@ export default class CDateBar extends Vue {
 .date-bar {
   @include flex(h);
   overflow-x: scroll;
+  scroll-behavior: smooth;
   padding: 10px 0;
   background-color: $c-app-theme;
 

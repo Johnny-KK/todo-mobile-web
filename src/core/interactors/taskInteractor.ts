@@ -10,6 +10,7 @@ import {
 } from '@/core/services/database/collectionService';
 import { ICollection } from '@/core/entities/collection';
 import { queryLocalFile } from '@/core/services/http/task';
+import commonInteractor from '@/core/interactors/commonInteractor';
 
 class TaskInteractor {
   public static getInstance() {
@@ -104,18 +105,15 @@ class TaskInteractor {
   public async writeBackupToLocalDevice(): Promise<boolean> {
     const filePath = '/storage/emulated/0/Download/';
     const fileName = `todo_backup_${new Date().valueOf()}.json`;
-    const result: IBackup = {
-      time: new Date().valueOf(),
-      data: {
-        taskList: [],
-        collectionList: []
-      }
-    };
     try {
-      const taskList: ITask[] = await this._taskService.queryAllList();
-      const collectionList: ICollection[] = await this._collectionService.queryAllList();
-      result.data.taskList = taskList;
-      result.data.collectionList = collectionList;
+      const result: IBackup = {
+        time: new Date().valueOf(),
+        data: {
+          taskList: await this._taskService.queryAllList(),
+          collectionList: await this._collectionService.queryAllList(),
+          common: await commonInteractor.getCommon()
+        }
+      };
       const entry = await this._fileService.resolveFileSystem(filePath);
       const file = await this._fileService.getFile(entry, fileName);
       await this._fileService.writeFile(file, JSON.stringify(result));
@@ -146,15 +144,10 @@ class TaskInteractor {
     const url = `/storage/emulated/0/Download/${fileName}`;
     try {
       const data: IBackup = await queryLocalFile<IBackup>(url);
-      if (
-        data.data.taskList.length === 0 &&
-        data.data.collectionList.length === 0
-      ) {
-        return Promise.resolve(false);
-      }
       await this._taskService.updateAllDate(
         data.data.taskList,
-        data.data.collectionList
+        data.data.collectionList,
+        data.data.common
       );
       return Promise.resolve(true);
     } catch {

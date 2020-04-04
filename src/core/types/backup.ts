@@ -1,5 +1,6 @@
 import { ITask } from '@/core/entities/task';
 import { ICollection } from '@/core/entities/collection';
+import { ICommon } from '@/core/entities/common';
 
 export interface IBackup {
   time: number; // 备份时间戳
@@ -9,4 +10,5 @@ export interface IBackup {
 interface IBackupData {
   taskList: ITask[];
   collectionList: ICollection[];
+  common: ICommon;
 }

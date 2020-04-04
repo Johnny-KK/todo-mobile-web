@@ -1,6 +1,7 @@
 import { db } from './index';
 import { ITask, TaskStatus } from '@/core/entities/task';
 import { ICollection } from '@/core/entities/collection';
+import { ICommon } from '@/core/entities/common';
 
 export class TaskService {
   /** 新增任务 */
@@ -40,12 +41,18 @@ export class TaskService {
   }
 
   /** 更新数据库任务数据 -- 原数据全部删除 */
-  public async updateAllDate(taskList: ITask[], collectionList: ICollection[]) {
-    return db.transaction('rw', db.task, db.collection, () => {
+  public async updateAllDate(
+    taskList: ITask[],
+    collectionList: ICollection[],
+    common: ICommon
+  ) {
+    return db.transaction('rw', db.task, db.collection, db.common, () => {
       db.task.clear();
       db.task.bulkAdd(taskList);
       db.collection.clear();
       db.collection.bulkAdd(collectionList);
+      db.common.clear();
+      db.common.add(common);
     });
   }
 }

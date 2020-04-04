@@ -16,7 +16,7 @@ import { Vue, Component } from 'vue-property-decorator';
 import echarts from 'echarts';
 
 @Component
-export default class Report extends Vue {
+export default class CReport extends Vue {
   mounted() {
     // this.initChat();
   }

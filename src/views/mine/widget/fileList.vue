@@ -17,20 +17,16 @@
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
 import { Overlay, CellGroup, Cell, Toast } from 'vant';
-import { readLocalFileSystem } from '@/services/native/file';
-import axios from 'axios';
-import { ITask, TaskService } from '@/services/indexedDB/task';
 
-Vue.use(Overlay, CellGroup, Cell, Toast);
+import taskInteractor from '@/core/interactors/taskInteractor';
 
-interface Backup {
-  data: { taskList: ITask[] }; // 备份数据
-  time: number; // 备份时间戳
-}
+Vue.use(Overlay)
+  .use(CellGroup)
+  .use(Cell)
+  .use(Toast);
 
 @Component
 export default class CFileList extends Vue {
-  taskService = new TaskService();
   /** download文件夹下json文件列表 */
   fileList: string[] = [];
 
@@ -40,38 +36,19 @@ export default class CFileList extends Vue {
 
   /** 导入数据 */
   async importData(fileName: string) {
-    try {
-      const backup: Backup = await this.queryFile(fileName);
-      if (backup.data.taskList.length < 1) {
-        Toast('无数据需要导入');
-        return;
-      }
-      this.taskService
-        .updateAllDate(backup.data.taskList)
-        .then(() => Toast('数据导入成功'))
-        .catch(() => Toast('数据导入失败'));
-    } catch {
-      Toast('文件读取失败!');
-    }
+    taskInteractor
+      .importBackupFromLocalDevice(fileName)
+      .then(success => Toast(success ? '数据导入成功' : '数据导入失败'));
   }
 
   /** 获取设备download目录下json文件名列表 */
   queryFileList() {
-    readLocalFileSystem()
+    taskInteractor
+      .queryJsonFromLocalDevice()
       .then((files: string[]) => {
         this.fileList = files;
       })
       .catch(() => Toast('文件读取失败'));
-  }
-
-  /** 根据文件名查询本地文件内容 */
-  queryFile(fileName: string): Promise<Backup> {
-    return new Promise((resolve, reject) => {
-      axios
-        .get<Backup>(`/storage/emulated/0/Download/${fileName}`)
-        .then(data => resolve(data.data))
-        .catch(() => reject(false));
-    });
   }
 }
 </script>

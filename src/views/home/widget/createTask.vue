@@ -57,7 +57,8 @@ import { Vue, Component } from 'vue-property-decorator';
 import { ActionSheet, Field, Cell, Button, Calendar } from 'vant';
 import moment from 'moment';
 
-import { ITask, TaskService } from '@/services/indexedDB/task';
+import taskInteractor from '@/core/interactors/taskInteractor';
+import { ITaskD } from '@/core/types/taskD';
 
 Vue.use(ActionSheet)
   .use(Field)
@@ -72,20 +73,18 @@ Vue.use(ActionSheet)
     }
   }
 })
-export default class CreateTask extends Vue {
-  /** 任务服务 */
-  taskService = new TaskService();
+export default class CCreateTask extends Vue {
   /** 是否显示新增面板 */
   show = false;
   /** 是否显示日历 */
   showCalendar = false;
   /** 任务实体 */
-  task: ITask = this.taskService.initTask();
+  task: ITaskD = taskInteractor.initTask();
 
   /** 重置 */
   reset() {
     this.show = false;
-    this.task = this.taskService.initTask();
+    this.task = taskInteractor.initTask();
   }
 
   /** 设置日期 */

@@ -39,7 +39,9 @@
 <script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator';
 import { Checkbox, SwipeCell, Button, Cell, CheckboxGroup } from 'vant';
-import { ITask, TaskStatus } from '@/services/indexedDB/task';
+
+import { TaskStatus } from '@/core/entities/task';
+import { ITaskD } from '@/core/types/taskD';
 
 Vue.use(Checkbox)
   .use(CheckboxGroup)
@@ -49,7 +51,7 @@ Vue.use(Checkbox)
 
 @Component
 export default class CTask extends Vue {
-  @Prop({ required: true }) task!: ITask;
+  @Prop({ required: true }) task!: ITaskD;
 
   checked: boolean = this.task.status === TaskStatus.已完成;
 

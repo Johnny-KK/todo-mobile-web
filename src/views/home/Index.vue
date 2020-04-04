@@ -18,7 +18,7 @@
           :key="task.id"
           :task="task"
           @changeState="changeState"
-          @del="del"
+          @del="deleteTask"
         ></p-task>
       </transition-group>
     </div>
@@ -37,22 +37,27 @@
 
 <script lang="ts">
 import { Vue, Component, Watch } from 'vue-property-decorator';
-import { ITask, TaskService, TaskStatus } from '@/services/indexedDB/task';
 import moment from 'moment';
 import CDateBar from './widget/dateBar.vue';
 import CTask from './widget/task.vue';
-import CreateTask from './widget/createTask.vue';
+import CCreateTask from './widget/createTask.vue';
+
+import taskInteractor from '@/core/interactors/taskInteractor';
+import { ITaskD } from '@/core/types/taskD';
+import { TaskStatus } from '@/core/entities/task';
 
 @Component({
   components: {
-    'create-task': CreateTask,
+    'create-task': CCreateTask,
     'p-task': CTask,
     'date-bar': CDateBar
   }
 })
 export default class CHome extends Vue {
-  taskService = new TaskService(); //
-  taskList: ITask[] = []; // 任务列表
+  /** 任务列表 */
+  taskList: ITaskD[] = [];
+
+  /** 任务列表过滤条件 */
   taskListParams = {
     planDate: moment()
       .startOf('date')
@@ -62,34 +67,32 @@ export default class CHome extends Vue {
   /** 获取任务列表 */
   @Watch('taskListParams', { deep: true, immediate: true })
   private queryTaskList(): void {
-    this.taskService.query(this.taskListParams.planDate).then(data => {
+    taskInteractor.queryTaskList(this.taskListParams.planDate).then(data => {
       this.taskList = data;
     });
   }
 
   /** 新增任务 */
-  addTask(task: ITask) {
-    this.taskService.add(task).then(() => {
+  addTask(task: ITaskD) {
+    taskInteractor.addTask(task).then(() => {
       this.queryTaskList();
-      (this.$refs.createForm as CreateTask).reset();
+      (this.$refs.createForm as CCreateTask).reset();
     });
   }
 
   /** 改变任务完成状态 */
   changeState(param: { checked: boolean; id: number }) {
-    this.taskService
-      .changeState(
+    taskInteractor
+      .updateTaskStatus(
         param.id,
         param.checked ? TaskStatus.已完成 : TaskStatus.待完成
       )
-      .then(() => {
-        this.queryTaskList();
-      });
+      .then(() => this.queryTaskList());
   }
 
   /** 删除任务 */
-  del(id: number) {
-    this.taskService.del(id).then(() => this.queryTaskList());
+  deleteTask(id: number) {
+    taskInteractor.delTask(id).then(() => this.queryTaskList());
   }
 }
 </script>

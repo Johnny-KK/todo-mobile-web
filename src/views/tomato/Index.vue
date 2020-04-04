@@ -13,7 +13,7 @@
 import { Vue, Component } from 'vue-property-decorator';
 
 @Component
-export default class Tomato extends Vue {}
+export default class CTomato extends Vue {}
 </script>
 
 <style lang="scss" scoped>

@@ -15,14 +15,12 @@
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
 import { Tabbar, TabbarItem } from 'vant';
-import { CommonService } from '@/services/indexedDB/common';
+import commonInteractor from '@/core/interactors/commonInteractor';
 
 Vue.use(Tabbar).use(TabbarItem);
 
 @Component
-export default class Main extends Vue {
-  commonService = new CommonService();
-
+export default class CMain extends Vue {
   // 选项卡
   activeTab = 0;
   tabList = [
@@ -33,12 +31,8 @@ export default class Main extends Vue {
   ];
 
   async mounted() {
-    // 获取上次处理时间，判断是否需要再次处理任务
-    const common = await this.commonService.get();
-
-    if (common.lastHandle === null) {
-      // TODO handle task
-    }
+    //
+    commonInteractor.getCommon().then(common => common.key);
   }
 }
 </script>

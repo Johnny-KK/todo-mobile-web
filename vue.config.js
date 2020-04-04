@@ -8,6 +8,7 @@ module.exports = {
     /** 在旧版本的sass-loader中 使用data替换prependData */
     loaderOptions: { sass: { prependData: `@import "@/styles/var.scss";` } }
   },
+  devServer: { port: 9527, open: true },
   chainWebpack: config => {
     /** icons排除单独处理 */
     config.module

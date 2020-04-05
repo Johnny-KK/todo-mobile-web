@@ -1,4 +1,4 @@
-// import "../assets/iconfont.js";
+import '../assets/iconfont.js';
 
 /**
  * TODO

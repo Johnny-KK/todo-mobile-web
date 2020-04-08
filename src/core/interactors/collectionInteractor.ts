@@ -1,4 +1,7 @@
-import { CollectionService } from '@/core/services/database/collectionService';
+import {
+  CollectionService,
+  DEFAULT_COLLECTION
+} from '@/core/services/database/collectionService';
 import { ICollection } from '@/core/entities/collection';
 
 class CollectionInteractor {
@@ -10,6 +13,20 @@ class CollectionInteractor {
 
   constructor(private _collectionService: CollectionService) {}
 
+  /** 初始化获取收集箱实体 */
+  public initCollection(): ICollection {
+    return {
+      name: '',
+      color: DEFAULT_COLLECTION.color,
+      order: 1
+    };
+  }
+
+  /** 收集箱排序 */
+  private compareFn(a: ICollection, b: ICollection): number {
+    return b.order - a.order;
+  }
+
   /** 查询收集箱列表 */
   public async queryCollectionList(): Promise<ICollection[]> {
     const list = await this._collectionService.queryAllList();
@@ -17,7 +34,7 @@ class CollectionInteractor {
     if (list.length === 0) {
       await this._collectionService.createDeafult();
     }
-    return await this._collectionService.queryAllList();
+    return (await this._collectionService.queryAllList()).sort(this.compareFn);
   }
 
   /** 新增收集箱 */
@@ -30,6 +47,8 @@ class CollectionInteractor {
     if (isExit) {
       return Promise.reject('收集箱已经存在');
     }
+    const maxOrder = list.sort((a, b) => b.order - a.order)[0].order;
+    collection.order = maxOrder + 1;
     return this._collectionService.create(collection);
   }
 

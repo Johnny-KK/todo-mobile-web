@@ -1,13 +1,15 @@
 <template>
   <div class="gc-layout-main">
     <div class="header">
-      <gc-icon name="menu"></gc-icon>
+      <gc-icon name="menu" @click="$refs.menu.show = true"></gc-icon>
       <span>Todo清单</span>
       <span class="sperate"></span>
       <gc-icon name="box"></gc-icon>
       <gc-icon name="cloud-sync"></gc-icon>
       <gc-icon name="more"></gc-icon>
     </div>
+
+    <p-menu ref="menu" @createCollection="addCollection"></p-menu>
 
     <date-bar v-model="taskListParams.planDate" ref="dateBar"></date-bar>
 
@@ -23,7 +25,7 @@
       </transition-group>
     </div>
 
-    <div class="add-btn" @click="$refs.createForm.show = true">
+    <div class="add-btn" @click="$refs.createTask.show = true">
       <gc-icon name="add"></gc-icon>
     </div>
 
@@ -31,7 +33,12 @@
       <gc-icon name="aim"></gc-icon>
     </div>
 
-    <create-task ref="createForm" @add="addTask"></create-task>
+    <create-task ref="createTask" @add="addTask"></create-task>
+
+    <create-collection
+      ref="createCollection"
+      @reload="$refs.menu.queryCollectionList()"
+    ></create-collection>
   </div>
 </template>
 
@@ -41,6 +48,8 @@ import moment from 'moment';
 import CDateBar from './widget/dateBar.vue';
 import CTask from './widget/task.vue';
 import CCreateTask from './widget/createTask.vue';
+import CMenu from './widget/menu.vue';
+import CCreateCollection from './widget/createCollection.vue';
 
 import taskInteractor from '@/core/interactors/taskInteractor';
 import { ITaskD } from '@/core/types/taskD';
@@ -50,7 +59,9 @@ import { TaskStatus } from '@/core/entities/task';
   components: {
     'create-task': CCreateTask,
     'p-task': CTask,
-    'date-bar': CDateBar
+    'date-bar': CDateBar,
+    'p-menu': CMenu,
+    'create-collection': CCreateCollection
   }
 })
 export default class CHome extends Vue {
@@ -76,7 +87,7 @@ export default class CHome extends Vue {
   addTask(task: ITaskD) {
     taskInteractor.addTask(task).then(() => {
       this.queryTaskList();
-      (this.$refs.createForm as CCreateTask).reset();
+      (this.$refs.createTask as CCreateTask).reset();
     });
   }
 
@@ -93,6 +104,12 @@ export default class CHome extends Vue {
   /** 删除任务 */
   deleteTask(id: number) {
     taskInteractor.delTask(id).then(() => this.queryTaskList());
+  }
+
+  /** 新增收集箱 */
+  addCollection() {
+    (this.$refs.menu as CMenu).show = false;
+    (this.$refs.createCollection as CCreateCollection).show = true;
   }
 }
 </script>

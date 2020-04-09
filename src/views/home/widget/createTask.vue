@@ -1,6 +1,30 @@
 <template>
   <van-action-sheet v-model="show">
-    <van-field v-model="task.title" placeholder="准备做什么" />
+    <van-field v-model="task.title" placeholder="准备做什么">
+      <div slot="right-icon" @click="showCollectionSelect = true">
+        <span
+          class="collection-icon"
+          :style="{ 'background-color': task.collectionD.color }"
+        ></span>
+      </div>
+    </van-field>
+    <van-popup v-model="showCollectionSelect" style="width: 200px;">
+      <van-cell
+        v-for="item in collectionList"
+        :key="item.id"
+        :title="item.name"
+        clickable
+        @click="setCollection(item)"
+      >
+        <div slot="icon">
+          <span
+            class="collection-icon"
+            :style="{ 'background-color': item.color }"
+            style="margin-right: 20px;"
+          ></span>
+        </div>
+      </van-cell>
+    </van-popup>
 
     <van-field v-model="task.content" placeholder="添加描述" />
 
@@ -59,6 +83,8 @@ import moment from 'moment';
 
 import taskInteractor from '@/core/interactors/taskInteractor';
 import { ITaskD } from '@/core/types/taskD';
+import collectionInteractor from '@/core/interactors/collectionInteractor';
+import { ICollection } from '@/core/entities/collection';
 
 Vue.use(ActionSheet)
   .use(Field)
@@ -78,13 +104,35 @@ export default class CCreateTask extends Vue {
   show = false;
   /** 是否显示日历 */
   showCalendar = false;
+  /** 显示收集箱选择  */
+  showCollectionSelect = false;
   /** 任务实体 */
   task: ITaskD = taskInteractor.initTask();
+  /** 收集箱列表 */
+  collectionList: ICollection[] = [];
+
+  mounted() {
+    this.queryCollectionList();
+  }
 
   /** 重置 */
   reset() {
     this.show = false;
     this.task = taskInteractor.initTask();
+  }
+
+  /** 获取收集箱列表 */
+  queryCollectionList() {
+    collectionInteractor
+      .queryCollectionList()
+      .then(data => (this.collectionList = data));
+  }
+
+  /** 设置收集箱 */
+  setCollection(collection: ICollection) {
+    this.task.collection = collection.id || -1;
+    this.task.collectionD = collection;
+    this.showCollectionSelect = false;
   }
 
   /** 设置日期 */
@@ -134,6 +182,13 @@ export default class CCreateTask extends Vue {
 <style lang="scss" scoped>
 .van-button__text {
   padding: 0 8px;
+}
+
+.collection-icon {
+  display: inline-block;
+  height: 12px;
+  width: 12px;
+  border-radius: 6px;
 }
 
 .date-selected {

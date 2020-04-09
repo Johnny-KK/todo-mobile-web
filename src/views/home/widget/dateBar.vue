@@ -51,6 +51,7 @@ export default class CDateBar extends Vue {
     }
   }
 
+  // FIXME 修复在vw模式下位置计算错误的BUG
   /** 使当前日期滚动到当中位置 */
   scrollToCenter() {
     const index = this.dateList.findIndex(

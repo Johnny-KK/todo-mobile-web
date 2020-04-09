@@ -63,6 +63,7 @@ export default class CCreateCollection extends Vue {
 
   /** 新增收集箱 */
   submit() {
+    // TODO 表单校验
     collectionInteractor
       .addCollection(this.collection)
       .then(() => Toast('新增成功'))

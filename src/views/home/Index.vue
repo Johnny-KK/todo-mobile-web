@@ -11,9 +11,9 @@
 
     <p-menu ref="menu" @createCollection="addCollection"></p-menu>
 
-    <date-bar v-model="taskListParams.planDate" ref="dateBar"></date-bar>
+    <!-- <date-bar v-model="taskListParams.planDate" ref="dateBar"></date-bar> -->
 
-    <div class="gc-layout-scroll">
+    <!-- <div class="gc-layout-scroll">
       <transition-group name="flip-list">
         <p-task
           v-for="task in taskList"
@@ -23,6 +23,10 @@
           @del="deleteTask"
         ></p-task>
       </transition-group>
+    </div> -->
+
+    <div class="gc-layout-scroll">
+      <task-contain-latest></task-contain-latest>
     </div>
 
     <div class="add-btn" @click="$refs.createTask.show = true">
@@ -50,10 +54,13 @@ import CTask from './widget/task.vue';
 import CCreateTask from './widget/createTask.vue';
 import CMenu from './widget/menu.vue';
 import CCreateCollection from './widget/createCollection.vue';
+import CTaskContainLatest from './widget/task-contain-latest.vue';
 
 import taskInteractor from '@/core/interactors/taskInteractor';
 import { ITaskD } from '@/core/types/taskD';
 import { TaskStatus } from '@/core/entities/task';
+// import commonInteractor from '@/core/interactors/commonInteractor';
+// import { ICommon } from '@/core/entities/common';
 
 @Component({
   components: {
@@ -61,12 +68,25 @@ import { TaskStatus } from '@/core/entities/task';
     'p-task': CTask,
     'date-bar': CDateBar,
     'p-menu': CMenu,
-    'create-collection': CCreateCollection
+    'create-collection': CCreateCollection,
+    'task-contain-latest': CTaskContainLatest
   }
 })
 export default class CHome extends Vue {
   /** 任务列表 */
   taskList: ITaskD[] = [];
+
+  /** app常用信息 */
+  // commonMsg: ICommon = null;
+
+  mounted() {
+    // this.queryCommonMsg();
+  }
+
+  /** 获取app常用信息 */
+  // queryCommonMsg() {
+  //   commonInteractor.getCommon().then(data => (this.commonMsg = data));
+  // }
 
   /** 任务列表过滤条件 */
   taskListParams = {

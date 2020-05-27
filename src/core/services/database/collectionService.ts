@@ -5,7 +5,7 @@ import { ICollection } from '@/core/entities/collection';
 export const DEFAULT_COLLECTION = {
   id: -1,
   name: '未分类',
-  color: '#000',
+  color: '#008d8e',
   order: -1
 };
 

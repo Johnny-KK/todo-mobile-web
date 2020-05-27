@@ -4,7 +4,8 @@ import { ICommon } from '@/core/entities/common';
 /** 默认常用信息 */
 const DEFAULT_COMMON = {
   key: 'common',
-  lastHandle: null
+  lastHandle: null,
+  homeTaskMode: 'calendar'
 };
 
 export class CommonService {

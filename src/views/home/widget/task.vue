@@ -103,6 +103,10 @@ export default class CTask extends Vue {
   background-color: $c-app-theme;
 }
 
+/deep/.van-checkbox__icon .van-icon {
+  border-width: 3px;
+}
+
 .tomato-contain {
   & > .gc-icon:not(:last-child) {
     margin-right: 10px;
